@@ -1,0 +1,50 @@
+# 輸出：每週一到五早上8點print出早安！（或是做別的事情，結合其他套件）
+import schedule
+import time
+def job():
+    print('早安!')
+
+schedule.every().monday.at("08:00").do(job)
+schedule.every().tuesday.at("08:00").do(job)
+schedule.every().wednesday.at("08:00").do(job)
+schedule.every().thursday.at("08:00").do(job)
+schedule.every().friday.at("08:00").do(job)
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)
+    
+
+#另外，加上天氣API & 撥放音樂 
+import schedule
+import time
+import requests
+import pygame
+
+def weatherplaymusic():
+    r = requests.get('https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=rdec-key-123-45678-011121314')
+    # print(r.status_code)
+    jsonData = r.json()
+    print(jsonData['records']['location'][0]['locationName'])
+    print('from:',jsonData['records']['location'][0]['weatherElement'][0]['time'][0]['startTime'])
+    print('to:',jsonData['records']['location'][0]['weatherElement'][0]['time'][0]['endTime'])
+    high = int(jsonData['records']['location'][0]['weatherElement'][4]['time'][0]['parameter']['parameterName'])
+    low = int(jsonData['records']['location'][0]['weatherElement'][2]['time'][0]['parameter']['parameterName'])
+    print(high,low)
+    if low<31:
+        pygame.mixer.init()
+        pygame.mixer.music.load("./起來現在也才3點.mp3")
+        pygame.mixer.music.play()
+        time.sleep(10)
+        pygame.quit()
+
+    
+def job():
+    print("早安!")
+    weatherplaymusic()
+schedule.every().day.at("11:09").do(job)
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)
+
