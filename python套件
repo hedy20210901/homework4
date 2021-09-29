@@ -36,13 +36,13 @@ def weatherplaymusic():
         pygame.mixer.music.load("./起來現在也才3點.mp3")
         pygame.mixer.music.play()
         time.sleep(10)
-        pygame.quit()
+        pygame.mixer.music.stop()
 
     
 def job():
     print("早安!")
     weatherplaymusic()
-schedule.every().day.at("11:09").do(job)
+schedule.every().day.at("11:31").do(job)
 
 while True:
     schedule.run_pending()
